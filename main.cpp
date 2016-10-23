@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cstdint>
 
+using std::cout;
 
 // INSTRUCTIONS 
 enum Opcodes{
@@ -37,7 +38,13 @@ struct primObjInt{
 struct primObjUInt{
 	unsigned type;
 	unsigned refCount;
-	int value;
+	unsigned value;
+};
+
+struct primObjf32{
+	unsigned type;
+	unsigned refCount;
+	float value;
 };
 
 struct funcObj{ // first class functions 
@@ -50,7 +57,7 @@ struct typeObj{ // first class type
 
 
 union any{
-	primObjInt sint; primObjUInt uint; funcObj func; typeObj type;
+	primObjf32 f32;  primObjInt sint; primObjUInt uint; funcObj func; typeObj type;
 };
 
 
@@ -78,42 +85,30 @@ int main(){
 	printSizes();
 
 	// TEST BEGIN
-	void *ptr = new int[5];
-	int *iptr = static_cast<int *>(ptr);
-	iptr[0] = 34;
-	std::cout << "ptr[1]: " << iptr[0] << std::endl;
 	uint64_t  ue = 54;
 	uint16_t ud = ue + 50;
-	std::cout << "ux = 5000 + 5000: " << ud << std::endl;
+	cout << "ux = 5000 + 5000: " << ud << std::endl;
 	std::string sep = "--------------------\n";
 	uint16_t targetA = 235, maskA = 15;
 	uint16_t targetB = 26105, maskB = 4095;
 	uint16_t targetC = 13, maskC = 9;
 	uint16_t targetD = 30201, maskD = 61440;
-	std::cout 
+	cout
 		<< "\n0000 0000 1110 1011 (235)\nAND\n0000 0000 0000 1111 (15)\n" << sep << "0000 0000 0000 1011 (11)\n" << sep << (targetA & maskA) << "\n"
 		<< "\n0110 0101 1111 1001 (26105)\nAND\n0000 1111 1111 1111 (4095)\n" << sep << "0000 0101 1111 1001 (1529)\n" << sep << (targetB & maskB) << "\n"
 		<< "\n0000 0000 0000 1101 (13) << 4\n0000 0000 1101 0000 (208)\nOR\n0000 0000 0000 1001 (9)\n" << sep << "0000 0000 1101 1001 (217)\n" << sep << ((targetC << 4) | maskC) << "\n"
 		<< "\n0111 0101 1111 1001 (30201) >> 12\n" << sep << "0000 0000 0000 0111 (7)\n" << sep << (targetD  >> 12) << "\n"
 		<< std::endl;
-	any *prim;
-	any x;
-	x.sint.value = 67;
-	prim = &x;
-	std::cout << "any prim.sint.value: " << (*prim).sint.value << std::endl;
-	any y;
-	y.uint.value = -67;
-	prim = &y;
-	std::cout << "any prim.sint.value: " << (*prim).uint.value << std::endl;
+	any *prim = (union any *)malloc(1 * sizeof(union any));
+	prim->f32.value = 27.3;
+	cout << "any prim.sint.value: " << (*prim).f32.value << std::endl;
+	free(prim);
 	// TEST END
 
-	std::cout << "¡bang! >> ";
+	cout << "¡bang! >> ";
 	std::string input;
 	std::cin >> input;
-	std::cout << std::endl;
-	
-	
-	delete []iptr;
+	cout << std::endl;
 	
 	initVM();
 
