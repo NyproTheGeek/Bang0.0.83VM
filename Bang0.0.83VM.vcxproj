@@ -11,11 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Globals.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="bobject.cpp" />
+    <ClCompile Include="bvm.cpp" />
+    <ClCompile Include="_main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Globals.h" />
+    <ClInclude Include="bobject.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D6D423FF-E5D9-415A-B822-0FB8A750E3F3}</ProjectGuid>
